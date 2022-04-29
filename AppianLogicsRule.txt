@@ -1,0 +1,406 @@
+                                                                  1./* range between two numbers*/
+
+1stway:
+
+a!localVariables(
+  local!range: 17,
+  local!endrange: 20,
+  local!diffrence: local!endrange - local!range - 1,
+  a!forEach(
+    items: enumerate(local!diffrence) + 1,
+    expression: local!range + fv!index,
+    
+  )
+)
+
+2nd way:
+
+a!localVariables(
+  local!numberOne: 17,
+  local!numberTwo: 5,
+  if(
+    local!numberOne = local!numberTwo,
+    {},
+    a!localVariables(
+      local!lowerNumber: min(
+        local!numberOne,
+        local!numberTwo
+      ),
+      local!upperNumber: max(
+        local!numberOne,
+        local!numberTwo
+      ),
+      local!difference: local!upperNumber - local!lowerNumber - 1,
+      1 + local!lowerNumber + enumerate(local!difference)
+    )
+  )
+)
+
+                                                                   2./* range between target number mnumbers*/
+
+a!localVariables(
+ local!data:4,
+ local!devide:rounddown(13/tointeger(local!data),0),
+ local!remaindeer:mod(13,local!devide),
+  local!sum:sum(local!devide,local!remaindeer),
+  a!forEach(
+    items:enumerate(local!sum)+1,
+    expression: enumerate(
+      if(
+        and(fv!isLast, local!remaindeer <> 0),
+        local!remaindeer,
+        local!data
+      )
+    ),
+  )
+  
+)
+
+
+                                                                      3./* string to arry conversion */
+
+1st way:
+
+a!localVariables(
+  local!Arry: "HSAP",
+  local!len: len(local!Arry),
+  a!forEach(
+    items: enumerate(local!len) + 1,
+    expression: a!forEach(
+      items: local!Arry[fv!item],
+      expression: fv!item
+    )
+  )
+)
+
+2nd way:
+
+{
+  a!localVariables(
+    local!word: "banana",
+    char(code(local!word))
+  )
+}
+
+                                                                         4./*arry of elements side by side */
+
+
+
+input: local!arr1: {"A","B","C","D"},
+      local!arr2: {"E","F","G","H"},
+
+output:{A E, B F, C G, D H}
+
+load(
+  local!arr1: {"A","B","C","D"},
+  local!arr2: {"E","F","G","H"},
+  local!totalCount: length(local!arr1),
+  local!countArray: enumerate(local!totalCount) +1,
+  a!forEach(
+    items: local!countArray,
+    expression: local!arr1[fv!index] &" " & local!arr2[fv!index]
+
+  )
+)
+
+2nd:Way
+
+a!localVariables(
+  local!a: {{1,2},{3,4},{6,7}},
+  a!forEach(
+    items: 1+enumerate(count(local!a)/2),
+    expression: joinarray(index(local!a,{fv!item*2-1,fv!item*2},null),",")
+  )
+),
+
+3rd:way
+
+
+a!localVariables(
+  local!a: {
+    {value: {1,2}},
+    {value: {3,4}},
+    {value: {6,7}}
+  },
+  a!forEach(
+    items: local!a,
+    expression: joinarray(fv!item.value,",")
+  )
+)
+
+                                                                               5./* pattrens */
+
+
+
+a!localVariables(
+  local!alphabet: {
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l"
+  },
+  a!forEach(
+    count(local!alphabet) - { enumerate(count(local!alphabet)) + 1 },
+    concat(rdrop(local!alphabet, fv!item))
+  )
+)
+
+
+2nd:Ways:
+
+a!localVariables(
+local!list: fn!enumerate(10) + 1,
+a!forEach(
+items: local!list,
+expression: fn!joinarray(fn!repeat(fv!item, fv!item))
+)
+)
+a!localVariables(
+local!alphabet: {"A","B","C","D","E"},
+local!list: fn!enumerate(5) + 1,
+a!forEach(
+items: local!list,
+expression: fn!joinarray(fn!repeat(fv!item, fn!index(local!alphabet,fv!item,"?")))
+)
+)
+a!localVariables(
+  local!alphabet: { "A", "B", "C", "D", "E" },
+  a!forEach(
+    items: local!alphabet,
+    expression: fn!joinarray(
+      fn!repeat(
+        fv!index,
+        fv!item
+      )
+    )
+  )
+)
+
+
+                                             6.  /* repeated charecters count in a string */
+
+
+
+
+{
+  " *****************************1st Way****************************  ",
+  a!localVariables(
+    local!data: "BejjenkiRajender",
+    local!len: len(local!data),
+    local!merge: union(
+      a!forEach(
+        items: enumerate(local!len) + 1,
+        expression: local!data[fv!index]
+      ),
+      a!forEach(
+        items: enumerate(local!len) + 1,
+        expression: local!data[fv!index]
+      )
+    ),
+    local!all: a!forEach(
+      items: enumerate(local!len) + 1,
+      expression: local!data[fv!index]
+    ),
+    a!forEach(
+      items: local!merge,
+      expression: index(
+        local!data,
+        wherecontains(fv!item, local!all),
+        {}
+      ) & "---------------" & count(wherecontains(fv!item, local!all))
+    )
+  ),
+  " *****************************2nd Way****************************  ",
+  {
+    a!localVariables(
+      local!word: "Banana",
+      a!forEach(
+        items: {
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G",
+          "H",
+          "I",
+          "J",
+          "K",
+          "L",
+          "M",
+          "N",
+          "O",
+          "P",
+          "Q",
+          "R",
+          "S",
+          "T",
+          "U",
+          "V",
+          "W",
+          "X",
+          "Y",
+          "Z"
+        },
+        expression: a!localVariables(
+          local!count: if(
+            regexmatch(fv!item, upper(local!word), 1) > 0,
+            count(regexallmatches(fv!item, local!word)),
+            {}
+          ),
+          if(
+            a!isNullOrEmpty(local!count),
+            {},
+            concat(
+              repeat(local!count, fv!item),
+              "-------",
+              local!count
+            )
+          )
+        )
+      )
+    )
+  },
+  " *****************************3rd Way**************************** ",
+  {
+    {
+      a!localVariables(
+        local!word: "banana",
+        local!letters: a!forEach(code(lower(local!word)), char(fv!item)),
+        local!uniqueLetters: union(local!letters, local!letters),
+        local!counts: a!forEach(
+          local!uniqueLetters,
+          a!map(
+            letter: fv!item,
+            count: length(wherecontains(fv!item, local!letters))
+          ),
+          
+        ),
+        a!forEach(
+          local!counts,
+          repeat(
+            fv!item.count,
+            fv!item.letter & " - " & fv!item.count
+          )
+        )
+      )
+    }
+  }/*{*/
+  /*a!localVariables(*/
+  /*local!word: "banana",*/
+  /*local!letters: a!forEach(code(lower(local!word)), char(fv!item)),*/
+  /*local!uniqueLetters: union(local!letters, local!letters),*/
+  /*local!counts: a!forEach(*/
+  /*local!uniqueLetters,*/
+  /*a!map(*/
+  /*letter: fv!item,*/
+  /*count: length(wherecontains(fv!item, local!letters))*/
+  /*)*/
+  /*),*/
+  /*a!forEach(*/
+  /*local!counts,*/
+  /*concat(repeat(fv!item.count, fv!item.letter)) & " ----> " & fv!item.count*/
+  /*)*/
+  /*)*/
+  /*}*/
+  
+},
+
+
+
+                                                                   7. /* email validation */ 
+
+
+regexmatch(
+  pattern: "^[A-Z0-9\_-]+(\.{0,1}[A-Z0-9\+_-]+)*[@]{1}[A-Z0-9.-]*[A-Z0-9-]+[.]{1}[A-Z]{2,6}$",
+  searchString: ri!email,
+  regexFlags: "si"
+)
+
+
+
+                                                     8./* phone number validation */
+
+1st Way:
+
+a!localVariables(
+  local!phone:ri!number,
+  
+ if(len(local!phone)=10,
+ if(like(local!phone,"[6-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]"),"valid number","invalid number"),
+  "enter 10 numbers only")
+)
+------------------------------------------------------------------------------------------------------------------------------
+regular expression:
+2nd Way:
+
+ 
+a!localVariables(
+  local!ssns:ri!data,
+  a!forEach(
+    items: local!ssns,
+    expression: regexmatch("^[6-9]\d{9}$",fv!item
+    )
+  )
+)
+                                                                   
+
+                                                9,/* Remove repeated strings */
+
+
+a!localVariables(
+  local!trimmed: trim("Hello hellow Bejjenki Raju hello"),
+  local!split: split(local!trimmed, " "),
+  local!lower: lower(local!split),
+  local!union: union(local!lower, local!lower),
+  local!result: a!forEach(
+    items: local!union,
+    expression: if(
+      fv!isFirst,
+      concat(proper(fv!item), " "),
+      concat(fv!item, " ")
+    )
+  ),
+  concat(local!result)
+)
+
+2nd Way:
+
+a!localVariables(
+  local!string:union(split(lower("Hello hello Hello there there past pastures")," "),split(lower("Hello hello Hello there there past pastures")," ")),
+  substitute(tostring(local!string),";"," ")
+)
+
+
+                                                     10. /* OTP or random number genarate */
+
+
+remove(split(fixed(rand(),4),"."),1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
