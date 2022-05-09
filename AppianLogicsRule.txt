@@ -387,6 +387,20 @@ a!localVariables(
 remove(split(fixed(rand(),4),"."),1)
 
 
+                                           /*   11. returns list of matched numbers */
+                                           
+                                           
+   a!forEach(
+  items: difference(
+    enumerate(ri!endNum) + 1,
+    enumerate(ri!startNum) + 1
+  ),
+  expression: { if(search(5, fv!item) > 0, fv!item, {}) }
+)
+                                           
+                                           
+                                           
+                                           
 
 
 
