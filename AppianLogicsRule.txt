@@ -441,6 +441,40 @@ remove(split(fixed(rand(),4),"."),1)
 )
 
 
+/* 13 only find mactched letter values */
+
+input:{5,10,23,45,67,89,50,44,65}
+output:{5,45,50,65}
+
+a!localVariables(
+  local!sentence: {
+    10,
+    20,
+    25,
+    35,
+    5,
+    50,
+    40,
+    45,
+    555,
+    95,
+    55,
+    999,
+    3333,
+    5555,
+    555555,
+    777777,
+    55555555,
+    55
+  },
+  local!Duplicates: a!forEach(
+    items: split(local!sentence, " "),
+    expression: if(find("5", fv!item, 1), fv!item, {})
+  ),
+  union(local!Duplicates, local!Duplicates)
+)
+
+
 
 
 
