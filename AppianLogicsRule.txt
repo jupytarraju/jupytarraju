@@ -429,14 +429,15 @@ remove(split(fixed(rand(),4),"."),1)
     55555555,
     55
   },
-  a!forEach(
+  local!Duplicates: a!forEach(
     items: split(local!sentence, " "),
     expression: if(
       find("5", fv!item, 1) = or(1, 2, 3, 4, 5, 6, 7, 8, 9),
       fv!item,
       {}
     )
-  )
+  ),
+  union(local!Duplicates, local!Duplicates)
 )
 
 
