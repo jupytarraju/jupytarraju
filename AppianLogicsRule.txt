@@ -474,8 +474,72 @@ a!localVariables(
   union(local!Duplicates, local!Duplicates)
 )
 
+----------------------------------------------------------------------*assending order numbers*------------------------------------------
+input:{ "1", "52", "9999", "78" },
+output:{"1","52","78","9999"},
 
+a!localVariables(
+  local!values: { "1", "52", "9999", "78" },
+  local!prepare: a!forEach(
+    items: local!values,
+    expression: a!map(first: fv!item, index: fv!index)
+  ),
+  local!sorted: todatasubset(
+    local!prepare,
+    a!pagingInfo(
+      startIndex: 1,
+      batchSize: - 1,
+      sort: {
+        a!sortInfo(field: "first", ascending: true),
+        
+      }
+    )
+  ),
+  index(local!values, local!sorted.data.index)
+)
 
+/* sorting order with decimal values */
+
+input:{"1","1.1", "1.1.1", "4","1.2","3", "2","2.1","2.2","10","13",  "12" },
+output:{"1", "1.1", "1.1.1", "1.2", "2", "2.1", "2.2", "3", "4", "10", "12", "13"},
+
+a!localVariables(
+  local!values: {"1",
+  "1.1",
+  "1.1.1",
+  "4",
+  "1.2",
+  "3",
+  "2",
+  "2.1",
+  "2.2",
+  "10",
+  "13",
+  "12"
+  },
+  local!prepare: a!forEach(
+    items: local!values,
+    expression: a!map(
+      first: text(split(fv!item, ".")[1], "0000"),
+      second: text(index(split(fv!item, "."), 2, null), "0000"),
+      third: text(index(split(fv!item, "."), 3, null), "0000"),
+      index: fv!index
+    )
+  ),
+  local!sorted: todatasubset(
+    local!prepare,
+    a!pagingInfo(
+      startIndex: 1,
+      batchSize: -1,
+      sort: {
+        a!sortInfo(field: "first", ascending: true),
+        a!sortInfo(field: "second", ascending: true),
+        a!sortInfo(field: "third", ascending: true),
+      }
+    )
+  ),
+  index(local!values, local!sorted.data.index)
+)
 
 
 
