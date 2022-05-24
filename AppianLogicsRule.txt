@@ -544,7 +544,14 @@ a!localVariables(
 
 
 
+ /* print a to z small letters */
  
+ a!localVariables(
+a!forEach(
+  items: difference(enumerate(122)+1,enumerate(97)),
+  expression: char(fv!item)
+)
+)
 
 
 
