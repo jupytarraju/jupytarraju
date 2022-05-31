@@ -553,6 +553,55 @@ a!forEach(
 )
 )
 
+/*split value diffrent sequences*/
+
+a!localVariables(
+  local!singleArray: {"One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","MNH","KJJ","gft"},
+  local!lengthOfSingleArray: if(
+    a!isNullOrEmpty(local!singleArray),
+    0,
+    length(local!singleArray)
+  ),
+  if(
+    local!lengthOfSingleArray = 0,
+    {},
+    a!localVariables(
+      local!desiredLengthOfEachSplitArray: 4,
+      local!numberOfFullLengthBlocks: rounddown(
+        local!lengthOfSingleArray/local!desiredLengthOfEachSplitArray,
+        0
+      ),
+      local!remainder: mod(
+        local!lengthOfSingleArray,
+        local!desiredLengthOfEachSplitArray
+      ),
+      local!numberOfArraysInOutput: sum(
+        local!numberOfFullLengthBlocks,
+        local!remainder <> 0
+      ),
+      a!forEach(
+        items: 1 + enumerate(local!numberOfArraysInOutput),
+        expression: index(
+          local!singleArray,
+          sum(
+            product(fv!index - 1, local!desiredLengthOfEachSplitArray),
+            1
+          ) + enumerate(
+            if(
+              and(
+                fv!isLast,
+                local!remainder <> 0
+              ),
+              local!remainder,
+              local!desiredLengthOfEachSplitArray
+            )
+          ),
+          {}
+        )
+      )
+    )
+  )
+)
 
 
 
