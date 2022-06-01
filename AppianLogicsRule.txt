@@ -604,5 +604,34 @@ a!localVariables(
 )
 
 
+/* pattrens */
+
+a!localVariables(
+local!list: fn!enumerate(10) + 1,
+a!forEach(
+items: local!list,
+expression: fn!joinarray(fn!repeat(fv!item, fv!item))
+)
+)
+a!localVariables(
+local!alphabet: {"A","B","C","D","E"},
+local!list: fn!enumerate(5) + 1,
+a!forEach(
+items: local!list,
+expression: fn!joinarray(fn!repeat(fv!item, fn!index(local!alphabet,fv!item,"?")))
+)
+)
+a!localVariables(
+  local!alphabet: { "A", "B", "C", "D", "E" },
+  a!forEach(
+    items: local!alphabet,
+    expression: fn!joinarray(
+      fn!repeat(
+        fv!index,
+        fv!item
+      )
+    )
+  )
+)
 
 
